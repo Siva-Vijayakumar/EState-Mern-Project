@@ -4,7 +4,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "(node socket/app.js & node app.js) && cd ../client && npm start"
+    "start": "nohup node socket/app.js & nohup node app.js & cd ../client && npm start"
   },
   "keywords": [],
   "author": "",
