@@ -4,7 +4,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "nohup node socket/app.js & nohup node api/app.js & cd ../client && npm start"
+    "start": "nohup node socket/app.js & nohup node app.js & cd ../client && npm start"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
     "console-ninja": "^1.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "estateapp": "file:..",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.9",

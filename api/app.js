@@ -11,16 +11,16 @@ import path from "path";
 const app = express();
 const port = 3000;
 
-// app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(
     {origin: ["http://localhost:5173"],
     credentials: true,}
 ))
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-//   });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  });
 
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRoute);
