@@ -51,14 +51,29 @@ function Navbar() {
             onClick={() => setOpen((prev) => !prev)}
           />
         </div>
-        {/* <div className={open ? "menu active" : "menu"}>
+        <div className={open ? "menu active" : "menu"}>
           <a href="/">Home</a>
           <a href="/list">Estate</a>
           <a href="/profile">Profile</a>
           <a href="/add">Sell</a>
-          <a href="/login">Sign in</a>
-          <a href="/register">Sign up</a>
-        </div> */}
+          {currentUser ? (
+          <div className="user">
+            <img src={currentUser.avatar || "/noavatar.jpg"} alt="" />
+            <span>{currentUser.username}</span>
+            <Link to="/profile" className="profile">
+              {number > 0 && <div className="notification">{number}</div>}
+              <span>Profile</span>
+            </Link>
+          </div>
+        ) : (
+          <>
+            <a href="/login">Sign in</a>
+            <a href="/register" className="register">
+              Sign up
+            </a>
+          </>
+        )}
+        </div>
       </div>
     </nav>
   );
