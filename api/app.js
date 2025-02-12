@@ -8,8 +8,14 @@ import userRoute from "./routes/user.route.js";
 import chatRoute from "./routes/chat.route.js";
 import messageRoute from "./routes/message.route.js";
 import path from "path";
+import { fileURLToPath } from "url";
 const app = express();
 const port = 3000;
+
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.json());
