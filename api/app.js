@@ -14,19 +14,21 @@ const port = 3000;
 
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.resolve();
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+// app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(
     {origin: ["http://localhost:5173"],
     credentials: true,}
-))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
+));
+
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
+});
 
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRoute);
