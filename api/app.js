@@ -10,17 +10,19 @@ import messageRoute from "./routes/message.route.js";
 import path from "path";
 import { fileURLToPath } from "url";
 const app = express();
-const port = 3000;
+const port =process.env.PORT || 3000;
 
 
 
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 // app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(
-    {origin: ["http://localhost:5173"],
+    {origin: "*",
     credentials: true,}
 ));
 
