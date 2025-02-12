@@ -4,12 +4,14 @@ import { AuthContext } from "./AuthContext";
 
 export const SocketContext = createContext();
 
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+
 export const SocketContextProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io("http://localhost:4000"));
+    setSocket(io(BASE_URL));
   }, []);
 
   useEffect(() => {
