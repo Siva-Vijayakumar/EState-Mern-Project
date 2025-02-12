@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === "production") {
   }
 
 
-const PORT = process.env.PORT || 8800;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`🚀 Server is running at http://localhost:${PORT}`);
 });
