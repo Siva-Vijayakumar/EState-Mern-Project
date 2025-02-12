@@ -11,7 +11,8 @@ import testRoute from './routes/test.route.js';
 import userRoute from './routes/user.route.js'
 import chatRoute from './routes/chat.route.js'
 import messageRoute from './routes/message.route.js';
-import { initializeSocket } from "./app.js"; 
+// import { initializeSocket } from "./app.js"; 
+import { initializeSocket } from './socket/app.js';
 // import { env } from 'process';
 
 dotenv.config()
