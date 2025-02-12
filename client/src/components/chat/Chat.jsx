@@ -8,25 +8,12 @@ import { useNotificationStore } from "../../lib/notificationStore";
 
 function Chat({ chats }) {
   const [chat, setChat] = useState(null);
-  const [allUsers, setAllUsers] = useState([]); // Store all users
   const { currentUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
 
   const messageEndRef = useRef();
-  const decrease = useNotificationStore((state) => state.decrease);
 
-  // Fetch all users when the component mounts
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await apiRequest.get("/users"); // Assuming your API has a /users endpoint
-        setAllUsers(res.data.filter((user) => user.id !== currentUser.id)); // Exclude current user
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchUsers();
-  }, [currentUser.id]);
+  const decrease = useNotificationStore((state) => state.decrease);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -44,21 +31,40 @@ function Chat({ chats }) {
     }
   };
 
-  // Handle creating a new chat if it doesn't exist
-  const handleStartChat = async (receiver) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const text = formData.get("text");
+
+    if (!text) return;
     try {
-      const res = await apiRequest.post("/chats", { receiverId: receiver.id });
-      setChat({ ...res.data, receiver });
+      const res = await apiRequest.post("/messages/" + chat.id, { text });
+      setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
+      e.target.reset();
+      socket.emit("sendMessage", {
+        receiverId: chat.receiver.id,
+        data: res.data,
+      });
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
+    const read = async () => {
+      try {
+        await apiRequest.put("/chats/read/" + chat.id);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     if (chat && socket) {
       socket.on("getMessage", (data) => {
         if (chat.id === data.chatId) {
           setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }));
+          read();
         }
       });
     }
@@ -71,23 +77,29 @@ function Chat({ chats }) {
     <div className="chat">
       <div className="messages">
         <h1>Messages</h1>
-        {allUsers.map((user) => (
+        {chats?.map((c) => (
           <div
             className="message"
-            key={user.id}
-            onClick={() => handleStartChat(user)}
+            key={c.id}
+            style={{
+              backgroundColor:
+                c.seenBy.includes(currentUser.id) || chat?.id === c.id
+                  ? "white"
+                  : "#fecd514e",
+            }}
+            onClick={() => handleOpenChat(c.id, c.receiver)}
           >
-            <img src={user.avatar || "/noavatar.jpg"} alt="" />
-            <span>{user.username}</span>
+            <img src={c.receiver.avatar || "/noavatar.jpg"} alt="" />
+            <span>{c.receiver.username}</span>
+            <p>{c.lastMessage}</p>
           </div>
         ))}
       </div>
-
       {chat && (
         <div className="chatBox">
           <div className="top">
             <div className="user">
-              <img src={chat.receiver.avatar || "/noavatar.jpg"} alt="" />
+              <img src={chat.receiver.avatar || "noavatar.jpg"} alt="" />
               {chat.receiver.username}
             </div>
             <span className="close" onClick={() => setChat(null)}>
@@ -95,7 +107,7 @@ function Chat({ chats }) {
             </span>
           </div>
           <div className="center">
-            {chat.messages?.map((message) => (
+            {chat.messages.map((message) => (
               <div
                 className="chatMessage"
                 style={{
