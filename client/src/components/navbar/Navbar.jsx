@@ -51,14 +51,14 @@ function Navbar() {
             onClick={() => setOpen((prev) => !prev)}
           />
         </div>
-        <div className={open ? "menu active" : "menu"}>
+        {/* <div className={open ? "menu active" : "menu"}>
           <a href="/">Home</a>
           <a href="/list">Estate</a>
           <a href="/profile">Profile</a>
           <a href="/add">Sell</a>
           <a href="/login">Sign in</a>
           <a href="/register">Sign up</a>
-        </div>
+        </div> */}
       </div>
     </nav>
   );
