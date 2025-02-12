@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import http from "http"; 
 import path from "path";
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import testRoute from './routes/test.route.js';
 import userRoute from './routes/user.route.js'
 import chatRoute from './routes/chat.route.js'
