@@ -27,29 +27,6 @@ function SinglePage() {
     }
   };
 
-  const sendMessage = async () => {
-    console.log(currentUser.id, currentUser.username);
-    console.log(post.userId, post.user.username);
-
-    const senderId = currentUser.id;
-    const receiverId = post.userId;
-
-    console.log("Users set in Zustand:", senderId, receiverId);
-    
-    try {
-      const chat = await apiRequest.post('/chats' , { receiverId });
-      console.log(chat.data)
-
-      const res = await apiRequest.post("/messages/" + chat.data.id, { text: "Hi I am Interesd in your property" });
-      console.log(res.data)
-
-      navigate("/profile")
-    } catch (error) {
-      console.log(error)
-      
-}
-}
-
   return (
     <div className="singlePage">
       <div className="details">
@@ -162,10 +139,10 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-          <button onClick={sendMessage}>
-              <img src="/chat.png" alt="Chat Icon" />
-              Send a greeting Hi 👋
-          </button>
+            <button>
+              <img src="/chat.png" alt="" />
+              Send a Message
+            </button>
             <button
               onClick={handleSave}
               style={{
